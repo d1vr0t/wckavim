@@ -142,8 +142,69 @@
         { name = "nvim_lsp"; }
         { name = "path"; }
         { name = "buffer"; }
+        { name = "luasnip"; }
 
       ];
+      settings = {
+        experimental = {
+          ghost_text = true;
+        };
+        mapping = {
+          "<C-j>" = "cmp.mapping.select_next_item()";
+          "<C-k>" = "cmp.mapping.select_prev_item()";
+
+          "<Tab>" = ''
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.expand_or_jumpable() then
+                luasnip.expand_or_jump()
+              else
+                fallback()
+              end
+            end, { "i", "s" })
+          '';
+
+          "<S-Tab>" = ''
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { "i", "s" })
+          '';
+
+          "<C-e>" = "cmp.mapping.abort()";
+          "<C-f>" = "cmp.mapping.scroll_docs(4)";
+          "<C-b>" = "cmp.mapping.scroll_docs(-4)";
+          "<C-Space>" = "cmp.mapping.complete()";
+          "<CR>" = "cmp.mapping.confirm({ select = false })"; # Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          "<S-CR>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })";
+
+        };
+      };
+    };
+    cmp-nvim-lsp = {
+      enable = true;
+    }; # lsp
+    cmp-buffer = {
+      enable = true;
+    };
+    cmp-path = {
+      enable = true;
+    }; # file system paths
+    cmp-cmdline = {
+      enable = true;
+    }; # autocomplete for cmdline
+    cmp_luasnip = {
+      enable = true;
+    }; # snippets
+    luasnip = {
+      enable = true;
+      settings.enable_autosnippets = true;
     };
 
   };
