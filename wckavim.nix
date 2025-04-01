@@ -11,6 +11,7 @@
   };
   colorschemes.onedark.enable = true;
   plugins = {
+    markview.enable = true;
     dashboard.enable = true;
     dashboard.settings = {
       change_to_vcs_root = true;
@@ -117,6 +118,9 @@
       enable = true;
       inlayHints = true;
       servers = {
+        prismals.enable = true;
+        prismals.package = pkgs.nodePackages."@prisma/language-server";
+        ts_ls.enable = true;
         html.enable = true;
         nixd = {
           enable = true;
