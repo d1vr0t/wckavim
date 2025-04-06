@@ -3,6 +3,7 @@
   globals = {
     mapleader = " ";
     maplocalleader = " ";
+    undofile = true;
   };
   opts = {
     number = true;
@@ -11,6 +12,8 @@
   };
   colorschemes.onedark.enable = true;
   plugins = {
+
+    web-devicons.enable = true; # Warning wants this explicitly
     markview.enable = true;
     dashboard.enable = true;
     dashboard.settings = {
@@ -37,6 +40,7 @@
       };
       theme = "hyper";
     };
+    undotree.enable = true;
     # Grep
     telescope = {
       enable = true;
@@ -46,6 +50,9 @@
         live-grep-args.enable = true;
         ui-select.enable = true;
         undo.enable = true;
+        media-files.enable = true;
+        #Nix fuzzy search
+        manix.enable = true;
       };
       keymaps = {
 
@@ -58,7 +65,10 @@
           action = "find_files";
           options.desc = "Find files";
         };
-
+        "<Leader>fn" = {
+          action = "manix";
+          options.desc = "Find in nix doc";
+        };
       };
     };
     # Filebrowser
@@ -159,18 +169,6 @@
                 cmp.select_next_item()
               elseif luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
-              else
-                fallback()
-              end
-            end, { "i", "s" })
-          '';
-
-          "<S-Tab>" = ''
-            cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_prev_item()
-              elseif luasnip.locally_jumpable(-1) then
-                luasnip.jump(-1)
               else
                 fallback()
               end
