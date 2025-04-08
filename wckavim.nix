@@ -14,6 +14,8 @@
   plugins = {
 
     web-devicons.enable = true; # Warning wants this explicitly
+    which-key.enable = true;
+    bufferline.enable = true;
     markview.enable = true;
     dashboard.enable = true;
     dashboard.settings = {
