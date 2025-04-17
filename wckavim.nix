@@ -120,6 +120,8 @@
       servers = {
         prismals.enable = true;
         prismals.package = pkgs.nodePackages."@prisma/language-server";
+        vuels.enable = true;
+        vuels.package = pkgs.nodePackages.vls;
         ts_ls.enable = true;
         html.enable = true;
         nixd = {
