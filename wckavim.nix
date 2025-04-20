@@ -12,7 +12,6 @@
   };
   colorschemes.onedark.enable = true;
   plugins = {
-
     web-devicons.enable = true; # Warning wants this explicitly
     which-key.enable = true;
     bufferline.enable = true;
@@ -87,7 +86,7 @@
         # Mark Code Blocks
         incremental_selection.enable = true;
         # Indent Code
-        indent.enable = true;
+        # indent.enable = true;
       };
     };
 
@@ -142,7 +141,7 @@
       };
     };
 
-    lsp-lines.enable = true;
+    #lsp-lines.enable = true;
     lsp-signature.enable = true;
     lsp-status.enable = true;
     lspkind.enable = true;
@@ -150,15 +149,30 @@
     # Autocompletion
     cmp = {
       enable = true;
-      autoEnableSources = true;
-      settings.sources = [
-        { name = "nvim_lsp"; }
-        { name = "path"; }
-        { name = "buffer"; }
-        { name = "luasnip"; }
-
-      ];
+      autoEnableSources = false;
       settings = {
+
+        sources = [
+          {
+            name = "nvim_lsp";
+            entry_filter = ''
+              	function(entry, ctx)
+                  return require("cmp").lsp.CompletionItemKind.Text ~= entry:get_kind();
+                end'';
+          }
+          { name = "path"; }
+          {
+            name = "buffer";
+            entry_filter = ''
+              	function(entry, ctx)
+                  return require("cmp").lsp.CompletionItemKind.Text ~= entry:get_kind();
+                end'';
+          }
+          { name = "luasnip"; }
+          { name = "nvim_lsp_document_symbol"; }
+          { name = "nvim_lsp_signature_help"; }
+
+        ];
         experimental = {
           ghost_text = true;
         };
@@ -200,6 +214,13 @@
     cmp-cmdline = {
       enable = true;
     }; # autocomplete for cmdline
+    cmp-nvim-lsp-document-symbol = {
+      enable = true;
+    }; # docs
+    cmp-nvim-lsp-signature-help = {
+      enable = true;
+    }; # function signatures
+
     cmp_luasnip = {
       enable = true;
     }; # snippets
@@ -233,7 +254,17 @@
       action = "<cmd>lua vim.api.nvim_put({io.popen('uuidgen'):read():sub(1, -2)}, 'c', true, true)<CR>";
       options.desc = "Insert UUID";
     }
+    {
+      key = "<Leader>ca";
+      action = "<cmd>lua vim.lsp.buf.code_action()<CR>";
+      options.desc = "Apply Code Action";
+    }
 
+    {
+      key = "<Leader>e";
+      action = "<cmd>lua vim.diagnostic.open_float()<CR>";
+      options.desc = "Open full error/warning";
+    }
   ];
 
 }

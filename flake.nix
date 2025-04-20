@@ -17,17 +17,32 @@
     }:
 
     let
+      system = "x86_64-linux";
+      
       vimconfig = import ./wckavim.nix;
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgs = import nixpkgs { inherit system; };
 
     in
     {
 
-      packages.x86_64-linux.wckavim = nixvim.legacyPackages."x86_64-linux".makeNixvimWithModule {
-        inherit pkgs;
-        module = vimconfig;
+      packages."${system}" = {
+        wckavim = nixvim.legacyPackages."${system}".makeNixvimWithModule {
+          inherit pkgs;
+          module = vimconfig;
+        };
+        wckavim-offline = pkgs.writeShellApplication {
+          name = "nvim";
+          runtimeInputs = [
+            pkgs.bubblewrap
+            self.packages."${system}.wckavim"
+          ];
+          text = ''
+            bwrap --unshare-net nvim}
+          '';
+
+        };
+        default = self.packages."${system}".wckavim;
       };
-      packages.x86_64-linux.default = self.packages.x86_64-linux.wckavim;
 
     };
 }
