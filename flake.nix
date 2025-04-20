@@ -18,7 +18,7 @@
 
     let
       system = "x86_64-linux";
-      
+
       vimconfig = import ./wckavim.nix;
       pkgs = import nixpkgs { inherit system; };
 
@@ -34,10 +34,11 @@
           name = "nvim";
           runtimeInputs = [
             pkgs.bubblewrap
-            self.packages."${system}.wckavim"
+            self.packages."${system}".wckavim
+	    pkgs.bash
           ];
           text = ''
-            bwrap --unshare-net nvim}
+            bwrap --dev-bind / / --unshare-net ${nixpkgs.lib.getExe self.packages."${system}".wckavim}
           '';
 
         };

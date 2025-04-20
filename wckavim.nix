@@ -121,6 +121,12 @@
         prismals.package = pkgs.nodePackages."@prisma/language-server";
         volar.enable = true;
         ts_ls.enable = true;
+        eslint.enable = true;
+        bashls.enable = true;
+        postgres_lsp.enable = true;
+        lemminx.enable = true;
+        jsonls.enable = true;
+        yamlls.enable = true;
         html.enable = true;
         nixd = {
           enable = true;
