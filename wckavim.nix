@@ -3,12 +3,13 @@
   globals = {
     mapleader = " ";
     maplocalleader = " ";
-    undofile = true;
   };
+  clipboard.register = "unnamedplus";
   opts = {
     number = true;
     mouse = "a";
     cursorline = true;
+    undofile = true;
   };
   colorschemes.onedark.enable = true;
   plugins = {
