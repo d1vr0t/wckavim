@@ -19,7 +19,6 @@
     markview.enable = true;
     dashboard.enable = true;
     dashboard.settings = {
-      change_to_vcs_root = true;
       config = {
         footer = [
           "The only winning move is not to play"
