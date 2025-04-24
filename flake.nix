@@ -38,7 +38,7 @@
 	    pkgs.bash
           ];
           text = ''
-            bwrap --dev-bind / / --unshare-net ${nixpkgs.lib.getExe self.packages."${system}".wckavim "$@"}
+            bwrap --dev-bind / / --unshare-net ${nixpkgs.lib.getExe self.packages."${system}".wckavim} "$@"
           '';
 
         };
