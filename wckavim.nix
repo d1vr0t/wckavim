@@ -117,10 +117,32 @@
       enable = true;
       inlayHints = true;
       servers = {
-        prismals.enable = true;
-        prismals.package = pkgs.nodePackages."@prisma/language-server";
+        # prismals.enable = true;
+        # prismals.package = pkgs.nodePackages."@prisma/language-server"; Seems broken as of 25.05
         volar.enable = true;
-        ts_ls.enable = true;
+        ts_ls = {
+          enable = true;
+          settings = {
+            init_options = {
+              plugins = [
+                {
+                  name = "@vue/typescript-plugin";
+                  location = "${pkgs.vue-language-server}/lib/node_modules/@vue/language-server";
+                  languages = [
+                    "javascript"
+                    "typescript"
+                    "vue"
+                  ];
+                }
+              ];
+            };
+            filetypes = [
+              "javascript"
+              "typescript"
+              "vue"
+            ];
+          };
+        };
         eslint.enable = true;
         bashls.enable = true;
         postgres_lsp.enable = true;
@@ -147,7 +169,12 @@
       };
     };
 
-    #lsp-lines.enable = true;
+    lspsaga = {
+      enable = true;
+      lightbulb.sign = false;
+      ui.codeAction = "󰴺";
+      diagnostic.extendRelatedInformation = true;
+    };
     lsp-signature.enable = true;
     lsp-status.enable = true;
     lspkind.enable = true;
@@ -161,10 +188,6 @@
         sources = [
           {
             name = "nvim_lsp";
-            entry_filter = ''
-              	function(entry, ctx)
-                  return require("cmp").lsp.CompletionItemKind.Text ~= entry:get_kind();
-                end'';
           }
           { name = "path"; }
           {
@@ -198,12 +221,8 @@
             end, { "i", "s" })
           '';
 
-          "<C-e>" = "cmp.mapping.abort()";
-          "<C-f>" = "cmp.mapping.scroll_docs(4)";
-          "<C-b>" = "cmp.mapping.scroll_docs(-4)";
           "<C-Space>" = "cmp.mapping.complete()";
-          "<CR>" = "cmp.mapping.confirm({ select = false })"; # Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          "<S-CR>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })";
+          "<CR>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })"; # Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
         };
       };
@@ -244,6 +263,11 @@
       options.desc = "Disable space in normal mode";
       mode = "n";
     }
+    {
+      key = "<F1>";
+      action = "<Nop>";
+      options.desc = "Disable Helpfile";
+    }
 
     {
       key = "<c-n>";
@@ -254,6 +278,21 @@
       key = "<Leader>F";
       action = "<cmd>lua vim.lsp.buf.format()<CR>";
       options.desc = "Format Code";
+    }
+    {
+      key = "<Leader>fs";
+      action = "<cmd>Lspsaga finder<CR>";
+      options.desc = "Find symbol";
+    }
+    {
+      key = "<c-t>";
+      action = "<cmd>Lspsaga term_toggle<CR>";
+      options.desc = "Open Terminal";
+    }
+    {
+      key = "<F2>";
+      action = "<cmd>lua vim.lsp.buf.rename()<CR>";
+      options.desc = "Rename Symbol";
     }
     {
       key = "<Leader>id";
