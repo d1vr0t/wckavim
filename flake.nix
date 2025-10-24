@@ -20,6 +20,7 @@
       system = "x86_64-linux";
 
       vimconfig = import ./wckavim.nix;
+      vimconfig-ext = import ./comb.nix;
       pkgs = import nixpkgs { inherit system; };
 
     in
@@ -35,13 +36,18 @@
           runtimeInputs = [
             pkgs.bubblewrap
             self.packages."${system}".wckavim
-	    pkgs.bash
+            pkgs.bash
           ];
           text = ''
             bwrap --dev-bind / / --unshare-net ${nixpkgs.lib.getExe self.packages."${system}".wckavim} "$@"
           '';
 
         };
+        wckavim-ai = nixvim.legacyPackages."${system}".makeNixvimWithModule {
+          inherit pkgs;
+          module = vimconfig-ext;
+        };
+
         default = self.packages."${system}".wckavim;
       };
 

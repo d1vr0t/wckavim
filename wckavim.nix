@@ -5,6 +5,12 @@
     maplocalleader = " ";
   };
   clipboard.register = "unnamedplus";
+  autoCmd = [
+    {
+      command = ''lua vim.cmd.cd(vim.fn.expand('%:p:h'))'';
+      event = [ "VimEnter" ];
+    }
+  ];
   opts = {
     number = true;
     mouse = "a";
@@ -93,6 +99,10 @@
     # Show Head of current function on top
     treesitter-context = {
       enable = true;
+      settings = {
+        max_lines = 10;
+      };
+
     };
     # QoL for code, showing definitions, current scope, renaming, etc...
     treesitter-refactor = {
@@ -174,6 +184,11 @@
       lightbulb.sign = false;
       ui.codeAction = "󰴺";
       diagnostic.extendRelatedInformation = true;
+      finder = {
+        keys = {
+          tabe = "<CR>";
+        };
+      };
     };
     lsp-signature.enable = true;
     lsp-status.enable = true;
@@ -206,16 +221,13 @@
           ghost_text = true;
         };
         mapping = {
-          "<C-j>" = "cmp.mapping.select_next_item()";
-          "<C-k>" = "cmp.mapping.select_prev_item()";
-
           "<Tab>" = ''
             cmp.mapping(function(fallback)
               if cmp.visible() then
                 cmp.select_next_item()
-              elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-              else
+              elseif not cmp.visible() then
+	        cmp.mapping.complete()
+	      else
                 fallback()
               end
             end, { "i", "s" })
