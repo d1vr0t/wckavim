@@ -1,5 +1,17 @@
 { pkgs, lib, ... }:
 {
+  diagnostic.settings = {
+    virtual_text = false;
+    signs = true;
+    underline = true;
+    update_in_insert = false;
+    float = {
+      border = "rounded";
+      source = "always";
+      header = "";
+      prefix = "";
+    };
+  };
   globals = {
     mapleader = " ";
     maplocalleader = " ";
@@ -107,19 +119,22 @@
     # QoL for code, showing definitions, current scope, renaming, etc...
     treesitter-refactor = {
       enable = true;
-      highlightCurrentScope.enable = true;
-      highlightDefinitions.enable = true;
-      navigation.enable = true;
+      settings = {
+        highlight_current_scope.enable = true;
+        highlight_definitions.enable = true;
+        smart-rename.enable = true;
+        navigation.enable = true;
+      };
       # Rename with "grr"
-      smartRename.enable = true;
     };
 
     # Floating definitions, etc.:
     treesitter-textobjects = {
       enable = true;
-      lspInterop.enable = true;
-      move.enable = true;
-
+      settings = {
+        lsp_interop.enable = true;
+        move.enable = true;
+      };
     };
 
     # Language Server:
@@ -181,12 +196,20 @@
 
     lspsaga = {
       enable = true;
-      lightbulb.sign = false;
-      ui.codeAction = "󰴺";
-      diagnostic.extendRelatedInformation = true;
-      finder = {
-        keys = {
-          tabe = "<CR>";
+      settings = {
+        lightbulb.sign = false;
+        ui.codeAction = "󰴺";
+        diagnostic = {
+          extend_relatedInformation = true;
+          show_layout = "float";
+          max_width = 0.8;
+          text_hl_follow = true;
+          border_follow = true;
+        };
+        finder = {
+          keys = {
+            tabe = "<CR>";
+          };
         };
       };
     };
@@ -335,7 +358,7 @@
 
     {
       key = "<Leader>e";
-      action = "<cmd>lua vim.diagnostic.open_float()<CR>";
+      action = "<cmd>Lspsaga show_line_diagnostics<CR>";
       options.desc = "Open full error/warning";
     }
   ];
