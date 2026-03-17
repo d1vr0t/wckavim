@@ -222,15 +222,15 @@
         };
         mapping = {
           "<Tab>" = ''
-            cmp.mapping(function(fallback)
-              if cmp.visible() then
-                cmp.select_next_item()
-              elseif not cmp.visible() then
-	        cmp.mapping.complete()
-	      else
-                fallback()
-              end
-            end, { "i", "s" })
+                        cmp.mapping(function(fallback)
+                          if cmp.visible() then
+                            cmp.select_next_item()
+                          elseif not cmp.visible() then
+            	        cmp.mapping.complete()
+            	      else
+                            fallback()
+                          end
+                        end, { "i", "s" })
           '';
 
           "<C-Space>" = "cmp.mapping.complete()";
@@ -267,7 +267,23 @@
     };
 
   };
-
+  extraPlugins = [
+    (pkgs.vimUtils.buildVimPlugin {
+      pname = "ts-error-translator.nvim";
+      version = "latest";
+      src = pkgs.fetchFromGitHub {
+        owner = "dmmulroy";
+        repo = "ts-error-translator.nvim";
+        rev = "main";
+        sha256 = "sha256-kjZwfvb0B7GC4dBBSdgC/zRmCUCfCm4H5J+8SFzANJ4=";
+      };
+    })
+  ];
+  extraConfigLua = ''
+    require("ts-error-translator").setup({
+      auto_attach = true,
+    })
+  '';
   keymaps = [
     {
       key = "<Space>";
