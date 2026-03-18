@@ -19,7 +19,7 @@
   clipboard.register = "unnamedplus";
   autoCmd = [
     {
-      command = ''lua vim.cmd.cd(vim.fn.expand('%:p:h'))'';
+      command = "lua vim.cmd.cd(vim.fn.expand('%:p:h'))";
       event = [ "VimEnter" ];
     }
   ];
@@ -142,9 +142,9 @@
       enable = true;
       inlayHints = true;
       servers = {
-        # prismals.enable = true;
-        # prismals.package = pkgs.nodePackages."@prisma/language-server"; Seems broken as of 25.05
-        volar.enable = true;
+        #prismals.enable = true;
+        #prismals.package = pkgs.nodePackages."@prisma/language-server";
+        vue_ls.enable = true;
         ts_ls = {
           enable = true;
           settings = {
