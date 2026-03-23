@@ -136,7 +136,15 @@
         move.enable = true;
       };
     };
-
+    none-ls = {
+      enable = true;
+      sources = {
+        formatting.prettier = {
+          enable = true;
+          disableTsServerFormatter = true;
+        };
+      };
+    };
     # Language Server:
     lsp = {
       enable = true;
@@ -144,9 +152,19 @@
       servers = {
         #prismals.enable = true;
         #prismals.package = pkgs.nodePackages."@prisma/language-server";
-        vue_ls.enable = true;
+
+        vue_ls = {
+          enable = true;
+          settings = {
+            on_attach = ''
+              client.server_capabilities.documentFormattingProvider = false;
+              client.server_capabilities.documentRangeFormattingProvider = false;
+            '';
+          };
+        };
         ts_ls = {
           enable = true;
+
           settings = {
             init_options = {
               plugins = [
